@@ -1,24 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+
+interface feedItem {
+  id: string;
+  userId: string;
+  avatar: string;
+  comments: string;
+  date: string | Date;
+  didLike: boolean;
+  images: string | string[];
+  likes: number;
+  premium: boolean;
+  shopId: string;
+  shopName: string;
+  text: string;
+  username: string;
+}
 
 function App() {
+  const [feed, setFeed] = useState<feedItem[]>();
+  useEffect(() => {
+    fetch("http://localhost:3000/feed")
+      .then((res) => res.json())
+      .then((feed) => {
+        setFeed(feed);
+      });
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {feed?.map((item) => (
+        <div key={item.id}>
+          <h3>{item.shopName}</h3>
+          <p>{item.text}</p>
+        </div>
+      ))}
     </div>
   );
 }
