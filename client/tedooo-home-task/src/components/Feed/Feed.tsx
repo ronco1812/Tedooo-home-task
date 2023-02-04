@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { feedItem } from "../../types/FeedItem.type";
+import { feedItem } from "../../types/FeedItem";
 import FeedCard from "../FeedCard/FeedCard";
+import { Container } from "./styles";
 
 const Feed: React.FC = () => {
   const [feed, setFeed] = useState<feedItem[]>();
@@ -12,7 +13,7 @@ const Feed: React.FC = () => {
       });
   }, []);
   return (
-    <div>
+    <Container>
       {!feed ? (
         <div>Loading...</div>
       ) : (
@@ -20,7 +21,7 @@ const Feed: React.FC = () => {
           <FeedCard key={feedItem.id} feedItem={feedItem} />
         ))
       )}
-    </div>
+    </Container>
   );
 };
 

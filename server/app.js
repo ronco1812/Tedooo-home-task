@@ -13,21 +13,28 @@ app.get("/feed", (req, res) => {
       if (err) return res.send(err);
 
       const items = result.result.Data;
-      const feedItems = items.map((item) => ({
-        id: item.id[0],
-        userId: item.userId[0],
-        avatar: item.avatar[0],
-        comments: item.comments[0],
-        date: item.date[0],
-        didLike: item.didLike[0],
-        images: item.images[0],
-        likes: item.likes[0],
-        premium: item.premium[0],
-        shopId: item.shopId[0],
-        shopName: item.shopName[0],
-        text: item.text[0],
-        username: item.username[0],
-      }));
+      const feedItems = items.map((item) => {
+        const firstTwoImages = item.images && item.images.slice(0, 2);
+        const totalLikes =
+          item.didLike[0] === "true" && item.likes[0] === "0"
+            ? 1
+            : item.likes[0];
+        return {
+          id: item.id[0],
+          userId: item.userId[0],
+          avatar: item.avatar[0],
+          comments: item.comments[0],
+          date: item.date[0],
+          didLike: item.didLike[0] === "true" ? true : false,
+          images: firstTwoImages,
+          likes: totalLikes,
+          premium: item.premium[0],
+          shopId: item.shopId[0],
+          shopName: item.shopName[0],
+          text: item.text[0],
+          username: item.username[0],
+        };
+      });
 
       res.send(feedItems);
     });

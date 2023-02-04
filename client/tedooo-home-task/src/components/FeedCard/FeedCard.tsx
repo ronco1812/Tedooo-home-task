@@ -1,7 +1,8 @@
 import React from "react";
-import { feedItem } from "../../types/FeedItem.type";
+import { feedItem } from "../../types/FeedItem";
 import CardFooter from "./components/CardFooter";
 import CardHeader from "./components/CardHeader";
+import { ImageContainer, StyledCard, StyledImg } from "./styles";
 
 interface Props {
   feedItem: feedItem;
@@ -18,9 +19,11 @@ const FeedCard: React.FC<Props> = ({ feedItem }) => {
     date,
     shopName,
     images,
+    didLike,
   } = feedItem;
+
   return (
-    <div>
+    <StyledCard>
       <CardHeader
         userId={userId}
         avatar={avatar}
@@ -29,17 +32,17 @@ const FeedCard: React.FC<Props> = ({ feedItem }) => {
         text={text}
         username={username}
       />
-      <div>
-        {Array.isArray(images) ? (
-          images.map((image, index) => (
-            <img key={index} src={image} alt="pic" />
-          ))
-        ) : (
-          <img src={images} alt="pic" />
-        )}
-      </div>
-      <CardFooter totalComments={comments} totalLikes={likes} />
-    </div>
+      <ImageContainer>
+        {images.map((image: string, index: number) => (
+          <StyledImg key={index} src={image} alt="pic" />
+        ))}
+      </ImageContainer>
+      <CardFooter
+        totalComments={comments}
+        totalLikes={likes}
+        didLike={didLike}
+      />
+    </StyledCard>
   );
 };
 

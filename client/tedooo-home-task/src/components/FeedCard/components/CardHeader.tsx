@@ -1,9 +1,20 @@
 import React from "react";
+import { getTimeDifference } from "../../../utils/utils";
+import {
+  DateAndShop,
+  Dot,
+  ShopName,
+  StyledCardHeader,
+  StyledLabel,
+  StyledUsername,
+  UserImage,
+  UserInfoContainer,
+} from "../styles";
 
 interface Props {
   userId: string;
   avatar: string;
-  date: string | Date;
+  date: Date;
   shopName: string;
   text: string;
   username: string;
@@ -17,16 +28,20 @@ const CardHeader: React.FC<Props> = ({
   username,
 }) => {
   return (
-    <div>
-      <div>
-        <img src={avatar} alt="profile" />
+    <StyledCardHeader>
+      <UserInfoContainer>
+        <UserImage src={avatar} alt="profile" />
         <div>
-          {username}
-          <div>{`${shopName} ${date}`}</div>
+          <StyledUsername>{username}</StyledUsername>
+          <DateAndShop>
+            <ShopName>{shopName}</ShopName>
+            <Dot />
+            <StyledLabel>{getTimeDifference(date)}</StyledLabel>
+          </DateAndShop>
         </div>
-      </div>
+      </UserInfoContainer>
       <p>{text}</p>
-    </div>
+    </StyledCardHeader>
   );
 };
 

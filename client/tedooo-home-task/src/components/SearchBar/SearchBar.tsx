@@ -1,4 +1,6 @@
 import React from "react";
+import { SearchContainer, SearchInput } from "./styles";
+import { ReactComponent as SearchIcon } from "../../assets/icons/searchIcon.svg";
 
 interface Props {
   placeholder: string;
@@ -6,10 +8,10 @@ interface Props {
 
 const SearchBar: React.FC<Props> = ({ placeholder }) => {
   return (
-    <div>
-      <img alt="search" />
-      <input placeholder={placeholder} />
-    </div>
+    <SearchContainer>
+      <SearchIcon />
+      <SearchInput placeholder={placeholder} />
+    </SearchContainer>
   );
 };
 
