@@ -1,7 +1,13 @@
 import HomePage from "./pages/HomePage/HomePage";
+import { GlobalStyle } from "./ui/globalStyles";
 
 function App() {
-  return <HomePage />;
+  return (
+    <>
+      <GlobalStyle />
+      <HomePage />
+    </>
+  );
 }
 
 export default App;

@@ -3,9 +3,9 @@ export interface feedItem {
   userId: string;
   avatar: string;
   comments: number;
-  date: string | Date;
+  date: Date;
   didLike: boolean;
-  images: string | string[];
+  images: string[];
   likes: number;
   premium: boolean;
   shopId: string;
