@@ -8,7 +8,7 @@ const Feed: React.FC = () => {
   const [feed, setFeed] = useState<feedItem[]>([]);
   let [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(-1);
 
   const feedRef = useRef<HTMLDivElement>(null);
 
@@ -31,10 +31,8 @@ const Feed: React.FC = () => {
   }, [feed]);
 
   useEffect(() => {
-    console.log(page);
-
     if (!loading) return;
-    if (totalPages === page) {
+    if (totalPages + 1 === page) {
       setLoading(false);
       return;
     }
