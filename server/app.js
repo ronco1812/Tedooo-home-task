@@ -11,7 +11,8 @@ app.get("/feed", async (req, res) => {
     const result = await getFeed(page);
     res.status(200).json(result);
   } catch (error) {
-    throw error;
+    console.log("Error - app.js", error);
+    res.send(null);
   }
 });
 

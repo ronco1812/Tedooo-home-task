@@ -67,7 +67,7 @@ export const ImageContainer = styled.div`
 export const StyledImg = styled.img`
   width: 100%;
   height: auto;
-  object-fit: contain;
+  object-fit: cover;
 `;
 
 export const Footer = styled.div`

@@ -1,5 +1,6 @@
 const axios = require("axios");
 const xml2js = require("xml2js");
+const { pagination } = require("./service");
 
 const parseXml = (xml) => {
   const parser = new xml2js.Parser();
@@ -39,20 +40,16 @@ const getFeed = async (page) => {
         username: item.username[0],
       };
     });
-    const pageSize = 6;
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const pagedItems = feedItems.slice(startIndex, endIndex);
+    const pagedItems = pagination(page, feedItems);
+
     return {
       items: pagedItems,
       totalPages: Math.ceil(feedItems.length / 6),
     };
   } catch (e) {
-    console.log(e);
-    throw e;
+    console.log("Error - [getFeed:feedController.js]", e);
+    return null;
   }
 };
-
-exports.getFeed = getFeed;
 
 exports.getFeed = getFeed;
