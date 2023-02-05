@@ -6,6 +6,7 @@ const app = express();
 const parser = new xml2js.Parser();
 
 app.get("/feed", (req, res) => {
+  const page = parseInt(req.query.page) || 1;
   request.get("https://dev.tedooo.com/feed.xml", (err, response, body) => {
     if (err) return res.send(err);
 
@@ -35,8 +36,14 @@ app.get("/feed", (req, res) => {
           username: item.username[0],
         };
       });
-
-      res.send(feedItems);
+      const pageSize = 6;
+      const startIndex = (page - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      const pagedItems = feedItems.slice(startIndex, endIndex);
+      res.send({
+        items: pagedItems,
+        totalPages: Math.round(feedItems.length / 6) + 1,
+      });
     });
   });
 });
