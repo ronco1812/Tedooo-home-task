@@ -1,58 +1,63 @@
 import React, { useRef, useEffect, useState } from "react";
 import { feedItem } from "../../types/FeedItem";
 import FeedCard from "../FeedCard/FeedCard";
-import axios from "axios";
 import { Container } from "./styles";
+import service from "../../services/service";
 
 const Feed: React.FC = () => {
   const [feed, setFeed] = useState<feedItem[]>([]);
   let [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(-1);
 
-  const feedRef = useRef<HTMLDivElement>(null);
+  const feedRef: any = useRef<HTMLDivElement>(null);
 
   const observer = useRef(
     new IntersectionObserver((entries) => {
-      if (!loading) return;
-      if (entries[0].isIntersecting) {
-        setLoading(true);
-        setPage(page++);
-      }
+      if (
+        !loading ||
+        !entries[0].isIntersecting ||
+        (totalPages > 0 && totalPages < page)
+      )
+        return;
+      setLoading(true);
+      setPage(page++);
     })
   );
 
   useEffect(() => {
-    if (feedRef.current?.lastElementChild && feedRef.current) {
-      observer.current.observe(feedRef.current.lastElementChild);
-      const lastElement = feedRef.current.lastElementChild;
-      return () => observer.current.unobserve(lastElement);
-    }
+    if (!feedRef || (totalPages > 0 && totalPages < page)) return;
+    const lastElement = feedRef.current.lastElementChild;
+    observer.current.observe(lastElement);
+    return () => observer.current.unobserve(lastElement);
   }, [feed]);
 
   useEffect(() => {
-    console.log(page);
-
     if (!loading) return;
-    if (totalPages === page) {
+    if (totalPages + 1 === page && loading) {
       setLoading(false);
       return;
     }
     (async () => {
-      const resFeedItems = await axios.get(
-        `http://localhost:3000/feed?page=${page}`
-      );
-      setTotalPages(resFeedItems.data.totalPages);
-      setFeed([...feed, ...resFeedItems.data.items]);
+      const resFeedItems = await service.getFeedItems(page);
+
+      if (!resFeedItems) return;
+
+      setTotalPages(resFeedItems.totalPages);
+      setFeed([...feed, ...resFeedItems.items]);
       setLoading(false);
     })();
-  }, [loading, feed, page]);
+  }, [loading, feed, page, totalPages]);
 
   return (
     <Container ref={feedRef}>
-      {feed.map((feedItem) => (
-        <FeedCard key={feedItem.id} feedItem={feedItem} />
-      ))}
+      {feed ? (
+        feed.map((feedItem) => (
+          <FeedCard key={feedItem.id} feedItem={feedItem} />
+        ))
+      ) : (
+        <div>Sorry an error has occurred, please try later.</div>
+      )}
       {loading && <div>Loading...</div>}
     </Container>
   );

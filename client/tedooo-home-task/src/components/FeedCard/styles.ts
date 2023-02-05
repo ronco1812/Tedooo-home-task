@@ -60,10 +60,13 @@ export const ImageContainer = styled.div`
   height: 517px;
   justify-content: center;
   gap: 12px;
+  max-width: inherit;
+  overflow: hidden;
 `;
 
 export const StyledImg = styled.img`
-  height: 100%;
+  width: 100%;
+  height: auto;
   object-fit: cover;
 `;
 
