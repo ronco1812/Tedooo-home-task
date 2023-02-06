@@ -3,5 +3,5 @@
 
 ● Navigate into the Server folder and run 'npm install' and then run 'npm run start'
 
-● Navigate into the Client folder and run 'npm install' and then run 'npm start'
+● Navigate into the Client/tedooo-home-task folder and run 'npm install' and then run 'npm start'
 
